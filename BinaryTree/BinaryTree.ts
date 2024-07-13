@@ -9,10 +9,34 @@ class Node<T> {
 }
 
 export class BinaryTree<T> {
-  root: Node<T> | null = null;
+  root: Node<T> | null;
 
+  constructor() {
+    this.root = null;
+  }
+
+  // breadth-first insertion, from left to right
   insert(value: T): void {
-    // Implement insertion logic here
+    const node = new Node(value);
+
+    if (this.root === null) this.root = node;
+    else {
+      const queue = [this.root];
+
+      while (queue.length > 0) {
+        const current = queue.shift() as Node<T>;
+
+        if (current.left === null) {
+          current.left = node;
+          break;
+        } else queue.push(current.left);
+
+        if (current.right === null) {
+          current.right = node;
+          break;
+        } else queue.push(current.right);
+      }
+    }
   }
 
   inOrderTraversal(): T[] {
