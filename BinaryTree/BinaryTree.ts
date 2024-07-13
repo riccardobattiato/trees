@@ -39,16 +39,33 @@ export class BinaryTree<T> {
     }
   }
 
+  // depth-first, current-left-right, non-recursive
+  preOrderTraversal(): T[] {
+    const values: T[] = [];
+
+    if (this.root !== null) {
+      const stack = [this.root];
+
+      while (stack.length > 0) {
+        const current = stack.pop() as Node<T> | null;
+        if (current !== null) values.push(current.value);
+        else break;
+
+        if (current.right !== null) stack.push(current.right);
+        if (current.left !== null) stack.push(current.left);
+      }
+    }
+
+    return values;
+  }
+
+  // depth-first, left-current-right
   inOrderTraversal(): T[] {
     // Implement in-order traversal logic here
     return [];
   }
 
-  preOrderTraversal(): T[] {
-    // Implement pre-order traversal logic here
-    return [];
-  }
-
+  // depth-first, left-right-current
   postOrderTraversal(): T[] {
     // Implement post-order traversal logic here
     return [];

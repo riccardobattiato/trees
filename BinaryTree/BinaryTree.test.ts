@@ -51,6 +51,30 @@ describe("BinaryTree", () => {
     expect(tree.root?.right?.right?.value).toBe(35);
   });
 
+  test("should perform pre-order traversal correctly", () => {
+    const values = [10, 5, 15, 3, 7, 13, 17];
+    values.forEach((value) => tree.insert(value));
+
+    expect(tree.preOrderTraversal()).toEqual([10, 5, 3, 7, 15, 13, 17]);
+  });
+
+  test("should perform pre-order traversal correctly with random values", () => {
+    const values = Array.from({ length: 7 }, () =>
+      Math.floor(Math.random() * 100)
+    );
+    values.forEach((value) => tree.insert(value));
+
+    expect(tree.preOrderTraversal()).toEqual([
+      values[0],
+      values[1],
+      values[3],
+      values[4],
+      values[2],
+      values[5],
+      values[6],
+    ]);
+  });
+
   test("should perform in-order traversal correctly", () => {
     tree.insert(10);
     tree.insert(5);
@@ -61,18 +85,6 @@ describe("BinaryTree", () => {
     tree.insert(17);
 
     expect(tree.inOrderTraversal()).toEqual([3, 5, 7, 10, 13, 15, 17]);
-  });
-
-  test("should perform pre-order traversal correctly", () => {
-    tree.insert(10);
-    tree.insert(5);
-    tree.insert(15);
-    tree.insert(3);
-    tree.insert(7);
-    tree.insert(13);
-    tree.insert(17);
-
-    expect(tree.preOrderTraversal()).toEqual([10, 5, 3, 7, 15, 13, 17]);
   });
 
   test("should perform post-order traversal correctly", () => {
