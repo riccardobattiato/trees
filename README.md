@@ -1,4 +1,13 @@
-# trees
+# 🌲 Trees
+
+# List of challenges
+Progression and base test cases courtesy of ChatGPT
+
+1. [ ] Binary Tree
+2. [ ] Binary Search Tree
+3. [ ] AVL Tree
+4. [ ] Red Black Tree
+5. [ ] Red Black Interval Tree
 
 To install dependencies:
 
