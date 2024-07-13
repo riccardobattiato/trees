@@ -19,4 +19,14 @@ export class BinaryTree<T> {
     // Implement in-order traversal logic here
     return [];
   }
+
+  preOrderTraversal(): T[] {
+    // Implement pre-order traversal logic here
+    return [];
+  }
+
+  postOrderTraversal(): T[] {
+    // Implement post-order traversal logic here
+    return [];
+  }
 }
