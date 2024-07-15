@@ -12,7 +12,31 @@ export class BinarySearchTree<T> {
   root: Node<T> | null = null;
 
   insert(value: T): void {
-    // Implement BST insertion logic here
+    const node = new Node(value);
+    if (this.root === null) this.root = node;
+    else {
+      let current = this.root;
+      while (true) {
+        if (value < current.value) {
+          if (current.left !== null) {
+            current = current.left;
+            continue;
+          } else {
+            current.left = node;
+            break;
+          }
+        }
+        if (value > current.value) {
+          if (current.right !== null) {
+            current = current.right;
+            continue;
+          } else {
+            current.right = node;
+            break;
+          }
+        }
+      }
+    }
   }
 
   search(value: T): boolean {
