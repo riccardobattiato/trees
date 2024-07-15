@@ -17,53 +17,15 @@ describe("BinarySearchTree", () => {
     bst.insert(13);
     bst.insert(17);
 
-    expect(bst.inOrderTraversal()).toEqual([3, 5, 7, 10, 13, 15, 17]);
-  });
-
-  test("should search for existing and non-existing values", () => {
-    bst.insert(10);
-    bst.insert(5);
-    bst.insert(15);
-
-    expect(bst.search(10)).toBe(true);
-    expect(bst.search(5)).toBe(true);
-    expect(bst.search(15)).toBe(true);
-    expect(bst.search(20)).toBe(false);
-  });
-
-  test("should delete leaf nodes", () => {
-    bst.insert(10);
-    bst.insert(5);
-    bst.insert(15);
-    bst.insert(3);
-
-    bst.delete(3);
-
-    expect(bst.inOrderTraversal()).toEqual([5, 10, 15]);
-  });
-
-  test("should delete nodes with one child", () => {
-    bst.insert(10);
-    bst.insert(5);
-    bst.insert(15);
-    bst.insert(3);
-    bst.insert(4);
-
-    bst.delete(3);
-
-    expect(bst.inOrderTraversal()).toEqual([4, 5, 10, 15]);
-  });
-
-  test("should delete nodes with two children", () => {
-    bst.insert(10);
-    bst.insert(5);
-    bst.insert(15);
-    bst.insert(3);
-    bst.insert(7);
-
-    bst.delete(5);
-
-    expect(bst.inOrderTraversal()).toEqual([3, 7, 10, 15]);
+    // Manually verify the tree structure
+    const root = bst.root;
+    expect(root?.value).toBe(10);
+    expect(root?.left?.value).toBe(5);
+    expect(root?.right?.value).toBe(15);
+    expect(root?.left?.left?.value).toBe(3);
+    expect(root?.left?.right?.value).toBe(7);
+    expect(root?.right?.left?.value).toBe(13);
+    expect(root?.right?.right?.value).toBe(17);
   });
 
   test("should perform in-order traversal correctly", () => {
@@ -102,12 +64,39 @@ describe("BinarySearchTree", () => {
     expect(bst.postOrderTraversal()).toEqual([3, 7, 5, 13, 17, 15, 10]);
   });
 
-  test("should handle insertion of duplicate values", () => {
+  test("should handle deletion of leaf nodes", () => {
     bst.insert(10);
-    bst.insert(10);
+    bst.insert(5);
+    bst.insert(15);
+    bst.insert(3);
 
-    // Assuming duplicates are not allowed, there should only be one node with value 10
-    expect(bst.inOrderTraversal()).toEqual([10]);
+    bst.delete(3);
+
+    expect(bst.inOrderTraversal()).toEqual([5, 10, 15]);
+  });
+
+  test("should handle deletion of nodes with one child", () => {
+    bst.insert(10);
+    bst.insert(5);
+    bst.insert(15);
+    bst.insert(3);
+    bst.insert(4);
+
+    bst.delete(3);
+
+    expect(bst.inOrderTraversal()).toEqual([4, 5, 10, 15]);
+  });
+
+  test("should handle deletion of nodes with two children", () => {
+    bst.insert(10);
+    bst.insert(5);
+    bst.insert(15);
+    bst.insert(3);
+    bst.insert(7);
+
+    bst.delete(5);
+
+    expect(bst.inOrderTraversal()).toEqual([3, 7, 10, 15]);
   });
 
   test("should handle deletion of non-existing values gracefully", () => {

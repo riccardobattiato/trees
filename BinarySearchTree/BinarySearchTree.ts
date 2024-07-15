@@ -48,9 +48,17 @@ export class BinarySearchTree<T> {
     // Implement BST deletion logic here
   }
 
-  inOrderTraversal(): T[] {
-    // Implement in-order traversal logic here
-    return [];
+  // depth-first, left-current-right
+  inOrderTraversal(node = this.root): T[] {
+    if (!node) return [];
+
+    const values = [];
+
+    if (node.left) values.push(...this.inOrderTraversal(node.left));
+    values.push(node.value);
+    if (node.right) values.push(...this.inOrderTraversal(node.right));
+
+    return values;
   }
 
   preOrderTraversal(): T[] {
