@@ -60,9 +60,16 @@ export class BinaryTree<T> {
   }
 
   // depth-first, left-current-right
-  inOrderTraversal(): T[] {
-    // Implement in-order traversal logic here
-    return [];
+  inOrderTraversal(node = this.root): T[] {
+    if (!node) return [];
+
+    const values = [];
+
+    if (node.left) values.push(...this.inOrderTraversal(node.left));
+    values.push(node.value);
+    if (node.right) values.push(...this.inOrderTraversal(node.right));
+
+    return values;
   }
 
   // depth-first, left-right-current

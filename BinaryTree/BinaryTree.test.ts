@@ -76,15 +76,10 @@ describe("BinaryTree", () => {
   });
 
   test("should perform in-order traversal correctly", () => {
-    tree.insert(10);
-    tree.insert(5);
-    tree.insert(15);
-    tree.insert(3);
-    tree.insert(7);
-    tree.insert(13);
-    tree.insert(17);
+    const values = [1, 2, 3, 4, 5, 6];
+    values.forEach((value) => tree.insert(value));
 
-    expect(tree.inOrderTraversal()).toEqual([3, 5, 7, 10, 13, 15, 17]);
+    expect(tree.inOrderTraversal()).toEqual([4, 2, 5, 1, 6, 3]);
   });
 
   test("should perform post-order traversal correctly", () => {
