@@ -73,8 +73,15 @@ export class BinaryTree<T> {
   }
 
   // depth-first, left-right-current
-  postOrderTraversal(): T[] {
-    // Implement post-order traversal logic here
-    return [];
+  postOrderTraversal(node = this.root): T[] {
+    if (!node) return [];
+
+    const values = [];
+
+    if (node.left) values.push(...this.postOrderTraversal(node.left));
+    if (node.right) values.push(...this.postOrderTraversal(node.right));
+    values.push(node.value);
+
+    return values;
   }
 }
