@@ -4,7 +4,7 @@
 Progression and base test cases courtesy of ChatGPT
 
 1. [x] Binary Tree
-2. [ ] Binary Search Tree
+2. [x] Binary Search Tree
 3. [ ] AVL Tree
 4. [ ] Red Black Tree
 5. [ ] Red Black Interval Tree
