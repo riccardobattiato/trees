@@ -105,4 +105,23 @@ describe("BinarySearchTree", () => {
 
     expect(bst.inOrderTraversal()).toEqual([10]);
   });
+
+  test("should search for existing and non-existing values", () => {
+    bst.insert(10);
+    bst.insert(5);
+    bst.insert(15);
+    bst.insert(3);
+    bst.insert(7);
+    bst.insert(13);
+    bst.insert(17);
+
+    expect(bst.search(10)).toBe(true);
+    expect(bst.search(5)).toBe(true);
+    expect(bst.search(15)).toBe(true);
+    expect(bst.search(3)).toBe(true);
+    expect(bst.search(7)).toBe(true);
+    expect(bst.search(13)).toBe(true);
+    expect(bst.search(17)).toBe(true);
+    expect(bst.search(20)).toBe(false);
+  });
 });

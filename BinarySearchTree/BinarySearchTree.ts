@@ -39,8 +39,17 @@ export class BinarySearchTree<T> {
     }
   }
 
+  // breadth-first search
   search(value: T): boolean {
-    // Implement BST search logic here
+    const queue = [this.root];
+    let current;
+    do {
+      current = queue.shift();
+      if (current?.value === value) return true;
+      if (current?.left) queue.push(current.left);
+      if (current?.right) queue.push(current.right);
+    } while (queue.length > 0);
+
     return false;
   }
 
@@ -53,7 +62,7 @@ export class BinarySearchTree<T> {
     if (!node) return [];
 
     return [
-        ...this.inOrderTraversal(node.left),
+      ...this.inOrderTraversal(node.left),
       node.value,
       ...this.inOrderTraversal(node.right),
     ];
