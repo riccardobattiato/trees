@@ -58,6 +58,24 @@ export class BinarySearchTree<T> {
   }
 
   // recursively traverse the tree until a leaf / 1-child node is found
+  /**
+   * Most calls will return the given node, unchanged.
+   * Work is done when a node with the value to delete is found:
+   *
+   * The simplest case is when one of the children is null. By returning
+   * the other, the reference between the calling parent and the current node
+   * is broken; the latter gets replaced by its (left|right) child or null.
+   *
+   * The harder case is when both children of node are not null. Here, node
+   * will keep existing but its value will be replaced by either the
+   * leftmost successor or rightmost predecessor.
+   *
+   * The reason is that, by definition, both the kinds of node will have
+   * one value null, and are suitable to simplest-case deletion. Being
+   * the first predecessor/successor to the node to delete, it's also safe
+   * to replace the current node with the mentioned node value without breaking
+   * the order of the BST.
+   */
   private deleteNode(node: Node<T> | null, value: T): Node<T> | null {
     if (node === null) return null;
     if (value > node.value) node.right = this.deleteNode(node.right, value);
