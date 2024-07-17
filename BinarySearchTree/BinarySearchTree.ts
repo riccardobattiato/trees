@@ -54,7 +54,28 @@ export class BinarySearchTree<T> {
   }
 
   delete(value: T): void {
-    // Implement BST deletion logic here
+    if (this.root !== null) this.root = this.deleteNode(this.root, value);
+  }
+
+  // recursively traverse the tree until a leaf / 1-child node is found
+  private deleteNode(node: Node<T> | null, value: T): Node<T> | null {
+    if (node === null) return null;
+    if (value > node.value) node.right = this.deleteNode(node.right, value);
+    else if (value < node.value) node.left = this.deleteNode(node.left, value);
+    else {
+      // base case
+      if (node.left === null) return node.right;
+      else if (node.right === null) return node.left;
+      else {
+        let minSuccessor = node.right;
+        while (minSuccessor.left !== null) minSuccessor = minSuccessor.left;
+
+        node.value = minSuccessor.value;
+        node.right = this.deleteNode(node.right, node.value);
+      }
+    }
+
+    return node;
   }
 
   // depth-first, left-current-right
