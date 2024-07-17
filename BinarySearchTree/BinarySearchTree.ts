@@ -52,22 +52,32 @@ export class BinarySearchTree<T> {
   inOrderTraversal(node = this.root): T[] {
     if (!node) return [];
 
-    const values = [];
-
-    if (node.left) values.push(...this.inOrderTraversal(node.left));
-    values.push(node.value);
-    if (node.right) values.push(...this.inOrderTraversal(node.right));
-
-    return values;
+    return [
+        ...this.inOrderTraversal(node.left),
+      node.value,
+      ...this.inOrderTraversal(node.right),
+    ];
   }
 
-  preOrderTraversal(): T[] {
-    // Implement pre-order traversal logic here
-    return [];
+  // depth-first, current-left-right
+  preOrderTraversal(node = this.root): T[] {
+    if (!node) return [];
+
+    return [
+      node.value,
+      ...this.preOrderTraversal(node.left),
+      ...this.preOrderTraversal(node.right),
+    ];
   }
 
-  postOrderTraversal(): T[] {
-    // Implement post-order traversal logic here
-    return [];
+  // depth-first, left-right-current
+  postOrderTraversal(node = this.root): T[] {
+    if (!node) return [];
+
+    return [
+      ...this.postOrderTraversal(node.left),
+      ...this.postOrderTraversal(node.right),
+      node.value,
+    ];
   }
 }
