@@ -88,14 +88,36 @@ export class AVLTree<T> {
     return node;
   }
 
+  // node becomes left child of its right child
   private leftRotate(node: Node<T>): Node<T> {
-    // TODO: Implement left rotation
-    return node;
+    const newRoot = node.right;
+    if (!newRoot) return node;
+
+    const prevLeft = newRoot.left;
+
+    newRoot.left = node;
+    node.right = prevLeft; // previously was right-left child
+
+    node.height = this.getHeight(node);
+    newRoot.height = this.getHeight(node);
+
+    return newRoot;
   }
 
+  // node becomes right child of its left child
   private rightRotate(node: Node<T>): Node<T> {
-    // TODO: Implement right rotation
-    return node;
+    const newRoot = node.left;
+    if (!newRoot) return node;
+
+    const prevRight = newRoot.right;
+
+    newRoot.right = node;
+    node.left = prevRight; // previously was left-right child
+
+    node.height = this.getHeight(node);
+    newRoot.height = this.getHeight(node);
+
+    return newRoot;
   }
 
   private getBalanceFactor(node: Node<T> | null): number {
