@@ -21,6 +21,8 @@ export class AVLTree<T> {
     if (!node) return new Node(value);
     if (value >= node.value) node.right = this.insertNode(node.right, value);
     else node.left = this.insertNode(node.left, value);
+
+    node.height = this.getHeight(node);
     return node!;
   }
 
