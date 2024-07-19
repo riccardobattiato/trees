@@ -16,6 +16,7 @@ export class AVLTree<T> {
     this.root = this.insertNode(this.root, value);
   }
 
+  // TODO handle balancing
   private insertNode(node: Node<T> | null, value: T): Node<T> {
     if (!node) return new Node(value);
     if (value >= node.value) node.right = this.insertNode(node.right, value);
@@ -73,8 +74,11 @@ export class AVLTree<T> {
   }
 
   private getHeight(node: Node<T> | null): number {
-    // TODO: Implement height calculation
-    return 0;
+    if (!node) return 0;
+
+    const left = node.left?.height || 0;
+    const right = node.right?.height || 0;
+    return Math.max(left, right) + 1;
   }
 
   private balance(node: Node<T>): Node<T> {
@@ -93,8 +97,12 @@ export class AVLTree<T> {
   }
 
   private getBalanceFactor(node: Node<T> | null): number {
-    // TODO: Implement balance factor calculation
-    return 0;
+    if (!node) return 0;
+
+    const left = this.getHeight(node.left);
+    const right = this.getHeight(node.right);
+
+    return left - right;
   }
 
   private minValue(node: Node<T>): T {
