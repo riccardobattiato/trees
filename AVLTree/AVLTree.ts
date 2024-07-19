@@ -13,11 +13,13 @@ export class AVLTree<T> {
   root: Node<T> | null = null;
 
   insert(value: T): void {
-    // TODO: Implement insertion with balancing
+    this.root = this.insertNode(this.root, value);
   }
 
   private insertNode(node: Node<T> | null, value: T): Node<T> {
-    // TODO: Implement the actual insertion logic
+    if (!node) return new Node(value);
+    if (value >= node.value) node.right = this.insertNode(node.right, value);
+    else node.left = this.insertNode(node.left, value);
     return node!;
   }
 
