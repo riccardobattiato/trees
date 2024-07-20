@@ -37,13 +37,14 @@ export class RedBlackTree<T> {
   }
 
   search(value: T): boolean {
-    // TODO: Implement the search method
-    return false;
+    return this.searchNode(this.root, value);
   }
 
   private searchNode(node: Node<T> | null, value: T): boolean {
-    // TODO: Implement the helper method for searching nodes
-    return false;
+    if (node === null) return false;
+    if (value > node.value) return this.searchNode(node.right, value);
+    if (value < node.value) return this.searchNode(node.left, value);
+    return true;
   }
 
   inOrderTraversal(): T[] {
