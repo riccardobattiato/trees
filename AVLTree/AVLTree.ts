@@ -69,7 +69,11 @@ export class AVLTree<T> {
   }
 
   private preOrder(node: Node<T> | null, result: T[]): void {
-    // TODO: Implement pre-order traversal
+    if (node) {
+      result.push(node.value);
+      this.preOrder(node.left, result);
+      this.preOrder(node.right, result);
+    }
   }
 
   postOrderTraversal(): T[] {
