@@ -55,7 +55,11 @@ export class AVLTree<T> {
   }
 
   private inOrder(node: Node<T> | null, result: T[]): void {
-    // TODO: Implement in-order traversal
+    if (node) {
+      this.inOrder(node.left, result);
+      result.push(node.value);
+      this.inOrder(node.right, result);
+    }
   }
 
   preOrderTraversal(): T[] {
