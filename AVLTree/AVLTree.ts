@@ -43,24 +43,13 @@ export class AVLTree<T> {
       if (node.left === null) return node.right;
       if (node.right === null) return node.left;
 
-      // try to replace the current node with the lowest successor in the right subtree
-      if (node.right.left !== null) {
-        // lowest successor has no left child by definition
-        const lowestSuccessor = this.minValue(node.right);
-        node.right.left = this.deleteNode(node.right.left, lowestSuccessor);
-        node.value = lowestSuccessor;
-      } else {
-        // right subtree has no left child
-        // we can safely attach node's left to this empty slot
-        // and finally, remove node
-        node.right.left = node.left;
-        return node.right;
-      }
+      // node with two children: Get the inorder successor (smallest in the right subtree)
+      node.value = this.minValue(node.right);
+      node.right = this.deleteNode(node.right, node.value);
     }
 
-    const left = node.left?.height || 0;
-    const right = node.right?.height || 0;
-    node.height = Math.max(left, right) + 1;
+    node.height =
+      Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;
 
     return this.balance(node);
   }
