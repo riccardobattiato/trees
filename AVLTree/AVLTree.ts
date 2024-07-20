@@ -83,7 +83,11 @@ export class AVLTree<T> {
   }
 
   private postOrder(node: Node<T> | null, result: T[]): void {
-    // TODO: Implement post-order traversal
+    if (node) {
+      this.postOrder(node.left, result);
+      this.postOrder(node.right, result);
+      result.push(node.value);
+    }
   }
 
   private getHeight(node: Node<T> | null): number {
