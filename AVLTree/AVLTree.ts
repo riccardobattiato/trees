@@ -30,12 +30,39 @@ export class AVLTree<T> {
   }
 
   delete(value: T): void {
-    // TODO: Implement deletion with balancing
+    this.root = this.deleteNode(this.root, value);
   }
 
   private deleteNode(node: Node<T> | null, value: T): Node<T> | null {
-    // TODO: Implement the actual deletion logic
-    return node;
+    if (!node) return node;
+
+    if (value > node.value) node.right = this.deleteNode(node.right, value);
+    else if (value < node.value) node.left = this.deleteNode(node.left, value);
+    else {
+      // leaf node or one child null
+      if (node.left === null) return node.right;
+      if (node.right === null) return node.left;
+
+      // try to replace the current node with the lowest successor in the right subtree
+      if (node.right.left !== null) {
+        // lowest successor has no left child by definition
+        const lowestSuccessor = this.minValue(node.right);
+        node.right.left = this.deleteNode(node.right.left, lowestSuccessor);
+        node.value = lowestSuccessor;
+      } else {
+        // right subtree has no left child
+        // we can safely attach node's left to this empty slot
+        // and finally, remove node
+        node.right.left = node.left;
+        return node.right;
+      }
+    }
+
+    const left = node.left?.height || 0;
+    const right = node.right?.height || 0;
+    node.height = Math.max(left, right) + 1;
+
+    return this.balance(node);
   }
 
   search(value: T): boolean {
