@@ -19,11 +19,14 @@ export class AVLTree<T> {
   // TODO handle balancing
   private insertNode(node: Node<T> | null, value: T): Node<T> {
     if (!node) return new Node(value);
-    if (value >= node.value) node.right = this.insertNode(node.right, value);
-    else node.left = this.insertNode(node.left, value);
+    if (value > node.value) node.right = this.insertNode(node.right, value);
+    else if (value < node.value) node.left = this.insertNode(node.left, value);
+    else return node;
 
-    node.height = this.getHeight(node);
-    return node!;
+    node.height =
+      Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;
+
+    return this.balance(node);
   }
 
   delete(value: T): void {
@@ -77,14 +80,32 @@ export class AVLTree<T> {
 
   private getHeight(node: Node<T> | null): number {
     if (!node) return 0;
-
-    const left = node.left?.height || 0;
-    const right = node.right?.height || 0;
-    return Math.max(left, right) + 1;
+    return node.height;
   }
 
   private balance(node: Node<T>): Node<T> {
-    // TODO: Implement balancing logic
+    const factor = this.getBalanceFactor(node);
+
+    if (factor > 1) {
+      // subtree is left-heavy
+      const leftSubtreeFactor = this.getBalanceFactor(node.left);
+
+      if (node.left && leftSubtreeFactor < 0) {
+        // left subtree is right heavy; perform double rotation
+        node.left = this.leftRotate(node.left);
+      }
+      return this.rightRotate(node);
+    } else if (factor < -1) {
+      // subtree is right-heavy
+      const rightSubtreeFactor = this.getBalanceFactor(node.right);
+
+      if (node.right && rightSubtreeFactor > 0) {
+        // right subtree is left heavy; perform double rotation
+        node.right = this.rightRotate(node.right);
+      }
+      return this.leftRotate(node);
+    }
+
     return node;
   }
 
@@ -98,8 +119,10 @@ export class AVLTree<T> {
     newRoot.left = node;
     node.right = prevLeft; // previously was right-left child
 
-    node.height = this.getHeight(node);
-    newRoot.height = this.getHeight(node);
+    node.height =
+      Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;
+    newRoot.height =
+      Math.max(this.getHeight(newRoot.left), this.getHeight(newRoot.right)) + 1;
 
     return newRoot;
   }
@@ -114,19 +137,17 @@ export class AVLTree<T> {
     newRoot.right = node;
     node.left = prevRight; // previously was left-right child
 
-    node.height = this.getHeight(node);
-    newRoot.height = this.getHeight(node);
+    node.height =
+      Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;
+    newRoot.height =
+      Math.max(this.getHeight(newRoot.left), this.getHeight(newRoot.right)) + 1;
 
     return newRoot;
   }
 
   private getBalanceFactor(node: Node<T> | null): number {
     if (!node) return 0;
-
-    const left = this.getHeight(node.left);
-    const right = this.getHeight(node.right);
-
-    return left - right;
+    return this.getHeight(node.left) - this.getHeight(node.right);
   }
 
   private minValue(node: Node<T>): T {

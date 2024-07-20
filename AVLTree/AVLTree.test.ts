@@ -1,32 +1,14 @@
 import { expect, test, describe, beforeEach } from "bun:test";
-import { AVLTree } from './AVLTree';
+import { AVLTree } from "./AVLTree";
 
-describe('AVLTree', () => {
+describe("AVLTree", () => {
   let avl: AVLTree<number>;
 
   beforeEach(() => {
     avl = new AVLTree<number>();
   });
 
-  test('should insert nodes correctly', () => {
-    avl.insert(50);
-    avl.insert(25);
-    avl.insert(55);
-    avl.insert(52);
-    avl.insert(60);
-    avl.insert(37);
-    avl.insert(1);
-
-    expect(avl.root?.value).toBe(50);
-    expect(avl.root?.left?.value).toBe(25);
-    expect(avl.root?.right?.value).toBe(55);
-    expect(avl.root?.right?.left?.value).toBe(52);
-    expect(avl.root?.right?.right?.value).toBe(60);
-    expect(avl.root?.left?.right?.value).toBe(37);
-    expect(avl.root?.left?.left?.value).toBe(1);
-  });
-
- /*  test('should insert nodes correctly and maintain balance', () => {
+  test("should insert nodes correctly and maintain balance", () => {
     avl.insert(10);
     avl.insert(20);
     avl.insert(30);
@@ -40,9 +22,9 @@ describe('AVLTree', () => {
     expect(avl.root?.left?.left?.value).toBe(10);
     expect(avl.root?.left?.right?.value).toBe(25);
     expect(avl.root?.right?.right?.value).toBe(50);
-  }); */
+  });
 
-  test('should perform in-order traversal correctly', () => {
+  test("should perform in-order traversal correctly", () => {
     avl.insert(10);
     avl.insert(20);
     avl.insert(30);
@@ -53,7 +35,7 @@ describe('AVLTree', () => {
     expect(avl.inOrderTraversal()).toEqual([10, 20, 25, 30, 40, 50]);
   });
 
-  test('should perform pre-order traversal correctly', () => {
+  test("should perform pre-order traversal correctly", () => {
     avl.insert(10);
     avl.insert(20);
     avl.insert(30);
@@ -64,7 +46,7 @@ describe('AVLTree', () => {
     expect(avl.preOrderTraversal()).toEqual([30, 20, 10, 25, 40, 50]);
   });
 
-  test('should perform post-order traversal correctly', () => {
+  test("should perform post-order traversal correctly", () => {
     avl.insert(10);
     avl.insert(20);
     avl.insert(30);
@@ -75,7 +57,7 @@ describe('AVLTree', () => {
     expect(avl.postOrderTraversal()).toEqual([10, 25, 20, 50, 40, 30]);
   });
 
-  test('should handle deleting leaf nodes correctly', () => {
+  test("should handle deleting leaf nodes correctly", () => {
     avl.insert(10);
     avl.insert(20);
     avl.insert(30);
@@ -84,7 +66,7 @@ describe('AVLTree', () => {
     expect(avl.inOrderTraversal()).toEqual([20, 30]);
   });
 
-  test('should handle deleting nodes with one child correctly', () => {
+  test("should handle deleting nodes with one child correctly", () => {
     avl.insert(10);
     avl.insert(20);
     avl.insert(30);
@@ -94,7 +76,7 @@ describe('AVLTree', () => {
     expect(avl.inOrderTraversal()).toEqual([10, 20, 25]);
   });
 
-  test('should handle deleting nodes with two children correctly', () => {
+  test("should handle deleting nodes with two children correctly", () => {
     avl.insert(10);
     avl.insert(20);
     avl.insert(30);
@@ -104,7 +86,7 @@ describe('AVLTree', () => {
     expect(avl.inOrderTraversal()).toEqual([10, 25, 30]);
   });
 
-  test('should handle deleting the root node correctly', () => {
+  test("should handle deleting the root node correctly", () => {
     avl.insert(10);
     avl.insert(20);
     avl.insert(30);
@@ -114,7 +96,7 @@ describe('AVLTree', () => {
     expect(avl.inOrderTraversal()).toEqual([10, 30]);
   });
 
-  test('should maintain balance after multiple insertions and deletions', () => {
+  test("should maintain balance after multiple insertions and deletions", () => {
     avl.insert(10);
     avl.insert(20);
     avl.insert(30);
@@ -132,7 +114,7 @@ describe('AVLTree', () => {
     expect(avl.inOrderTraversal()).toEqual([20, 25, 30, 40]);
   });
 
-  test('should search for existing and non-existing values', () => {
+  test("should search for existing and non-existing values", () => {
     avl.insert(10);
     avl.insert(20);
     avl.insert(30);
