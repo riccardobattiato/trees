@@ -163,7 +163,7 @@ export class AVLTree<T> {
   }
 
   private minValue(node: Node<T>): T {
-    // TODO: Implement finding minimum value in subtree
+    if (node.left) return this.minValue(node.left);
     return node.value;
   }
 }
