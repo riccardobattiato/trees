@@ -1,14 +1,9 @@
-enum NodeColor {
-  RED = "red",
-  BLACK = "black",
-}
-
 export class Node<T> {
   value: T;
   left: Node<T> | null = null;
   right: Node<T> | null = null;
   parent: Node<T> | null = null;
-  color: NodeColor = NodeColor.RED;
+  color: "red" | "black" = "red";
 
   constructor(value: T) {
     this.value = value;
@@ -22,18 +17,16 @@ export class RedBlackTree<T> {
     // TODO: Implement the insert method
   }
 
-  private insertNode(node: Node<T>, value: T): Node<T> {
-    // TODO: Implement the helper method for inserting nodes
-    return node;
+  private insertFix(node: Node<T>): void {
+    // TODO: Implement the fixup method after insertion to maintain Red-Black properties
   }
 
   delete(value: T): void {
     // TODO: Implement the delete method
   }
 
-  private deleteNode(node: Node<T>, value: T): Node<T> | null {
-    // TODO: Implement the helper method for deleting nodes
-    return node;
+  private deleteFix(node: Node<T>): void {
+    // TODO: Implement the fixup method after deletion to maintain Red-Black properties
   }
 
   search(value: T): boolean {
@@ -89,38 +82,21 @@ export class RedBlackTree<T> {
     }
   }
 
+  private leftRotate(node: Node<T>): void {
+    // TODO: Implement the left rotation
+  }
+
+  private rightRotate(node: Node<T>): void {
+    // TODO: Implement the right rotation
+  }
+
+  private getMin(node: Node<T>): Node<T> {
+    // TODO: Implement the method to get the minimum value node
+    return node;
+  }
+
   isValidRedBlackTree(): boolean {
     // TODO: Implement the method to check if the tree is a valid red-black tree
     return false;
-  }
-
-  private getHeight(node: Node<T> | null): number {
-    if (!node) return 0;
-    return Math.max(this.getHeight(node.left), this.getHeight(node.right)) + 1;
-  }
-
-  private balance(node: Node<T>): Node<T> {
-    // TODO: Implement the method to balance the tree
-    return node;
-  }
-
-  private leftRotate(node: Node<T>): Node<T> {
-    // TODO: Implement the left rotation
-    return node;
-  }
-
-  private rightRotate(node: Node<T>): Node<T> {
-    // TODO: Implement the right rotation
-    return node;
-  }
-
-  private getBalanceFactor(node: Node<T> | null): number {
-    if (!node) return 0;
-    return this.getHeight(node.left) - this.getHeight(node.right);
-  }
-
-  private minValue(node: Node<T>): T {
-    if (node.left) return this.minValue(node.left);
-    return node.value;
   }
 }
