@@ -1,5 +1,5 @@
 import { expect, test, describe, beforeEach } from "bun:test";
-import { AVLTree } from "./AVLTree";
+import { AVLTree, Node } from "./AVLTree";
 
 describe("AVLTree", () => {
   let avl: AVLTree<number>;
@@ -114,6 +114,34 @@ describe("AVLTree", () => {
     expect(avl.inOrderTraversal()).toEqual([20, 25, 30, 40]);
   });
 
+  test("should handle insertion of random values and maintain balance", () => {
+    const values = generateRandomArray(100, 1, 1000);
+    values.forEach((value) => avl.insert(value));
+    expect(isBalanced(avl.root)).toBe(true);
+  });
+  test("should perform in-order traversal correctly with random values", () => {
+    const values = generateRandomArray(50, 1, 500);
+    values.forEach((value) => avl.insert(value));
+    const sortedValues = [...values].sort((a, b) => a - b);
+    expect(avl.inOrderTraversal()).toEqual(sortedValues);
+  });
+
+  test("should handle deletions of random values and maintain balance", () => {
+    const values = generateRandomArray(50, 1, 500);
+    values.forEach((value) => avl.insert(value));
+    const valuesToDelete = values.slice(0, 25);
+    valuesToDelete.forEach((value) => avl.delete(value));
+    expect(isBalanced(avl.root)).toBe(true);
+  });
+
+  test("should correctly handle a large number of insertions and deletions", () => {
+    const insertValues = generateRandomArray(200, 1, 1000);
+    const deleteValues = insertValues.slice(0, 100);
+    insertValues.forEach((value) => avl.insert(value));
+    deleteValues.forEach((value) => avl.delete(value));
+    expect(isBalanced(avl.root)).toBe(true);
+  });
+
   test("should search for existing and non-existing values", () => {
     avl.insert(10);
     avl.insert(20);
@@ -128,3 +156,23 @@ describe("AVLTree", () => {
     expect(avl.search(60)).toBe(false);
   });
 });
+
+function generateRandomArray(size: number, min: number, max: number): number[] {
+  const arr: number[] = [];
+  for (let i = 0; i < size; i++) {
+    arr.push(Math.floor(Math.random() * (max - min + 1)) + min);
+  }
+  return Array.from(new Set(arr)); // remove duplicates
+}
+
+function isBalanced(node: Node<number> | null): boolean {
+  if (!node) return true;
+  const left = node.left?.height || 0;
+  const right = node.right?.height || 0;
+  const balanceFactor = left - right;
+  return (
+    Math.abs(balanceFactor) <= 1 &&
+    isBalanced(node.left) &&
+    isBalanced(node.right)
+  );
+}
