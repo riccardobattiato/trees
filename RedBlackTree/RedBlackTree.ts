@@ -20,6 +20,7 @@ export class RedBlackTree<T> {
 
   insert(value: T): void {
     this.root = this.insertNode(this.root, value);
+    if (this.root.color === NodeColor.RED) this.root.color = NodeColor.BLACK;
   }
 
   private insertNode(node: Node<T> | null, value: T): Node<T> {
