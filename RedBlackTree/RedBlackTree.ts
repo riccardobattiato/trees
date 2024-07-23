@@ -101,11 +101,47 @@ export class RedBlackTree<T> {
   }
 
   private leftRotate(node: Node<T>): void {
-    // TODO: Implement the left rotation
+    if (node.right === null) return;
+    const newRoot = node.right; // refers to this subtree root
+
+    if (this.root === node) this.root = newRoot; // actual root pointer
+
+    // actual rotation
+    const leftSubtree = newRoot.left;
+    newRoot.left = node;
+
+    // parents reassignments
+    const nodeParent = node.parent;
+    node.parent = newRoot;
+
+    newRoot.parent = nodeParent;
+    if (nodeParent?.right === node) nodeParent.right = newRoot;
+    else if (nodeParent?.left === node) nodeParent.left = newRoot;
+
+    node.right = leftSubtree;
+    if (node.right) node.right.parent = node;
   }
 
   private rightRotate(node: Node<T>): void {
-    // TODO: Implement the right rotation
+    if (node.left === null) return;
+    const newRoot = node.left; // refers to this subtree root
+
+    if (this.root === node) this.root = newRoot; // actual root pointer
+
+    // actual rotation
+    const rightSubtree = newRoot.right;
+    newRoot.right = node;
+
+    // parents reassignments
+    const nodeParent = node.parent;
+    node.parent = newRoot;
+
+    newRoot.parent = nodeParent;
+    if (nodeParent?.right === node) nodeParent.right = newRoot;
+    else if (nodeParent?.left === node) nodeParent.left = newRoot;
+
+    node.left = rightSubtree;
+    if (node.left) node.left.parent = node;
   }
 
   private getMin(node: Node<T>): Node<T> {
