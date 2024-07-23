@@ -19,7 +19,15 @@ export class RedBlackTree<T> {
   root: Node<T> | null = null;
 
   insert(value: T): void {
-    // TODO: Implement the insert method
+    this.root = this.insertNode(this.root, value);
+  }
+
+  private insertNode(node: Node<T> | null, value: T): Node<T> {
+    if (node === null) return new Node(value);
+    if (value > node.value) node.right = this.insertNode(node.right, value);
+    else if (value < node.value)
+      node.left = this.insertNode(node.left, value);
+    return node;
   }
 
   private insertFix(node: Node<T>): void {
@@ -107,6 +115,10 @@ export class RedBlackTree<T> {
     return this.isValidRedBlackNode(this.root) !== -1;
   }
 
+  /**
+   * @param node
+   * @returns -1 for invalid subtree; otherwise returns height
+   */
   private isValidRedBlackNode(node: Node<T> | null): number {
     if (node === null) return 1;
     if (node.parent?.color === NodeColor.RED && node.color === NodeColor.RED)
