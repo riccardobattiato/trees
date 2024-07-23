@@ -1,9 +1,14 @@
+enum NodeColor {
+  BLACK,
+  RED,
+}
+
 export class Node<T> {
   value: T;
   left: Node<T> | null = null;
   right: Node<T> | null = null;
   parent: Node<T> | null = null;
-  color: "red" | "black" = "red";
+  color: NodeColor = NodeColor.RED;
 
   constructor(value: T) {
     this.value = value;
@@ -96,7 +101,24 @@ export class RedBlackTree<T> {
   }
 
   isValidRedBlackTree(): boolean {
-    // TODO: Implement the method to check if the tree is a valid red-black tree
-    return false;
+    if (this.root === null) return true;
+    if (this.root.color === NodeColor.RED) return false;
+
+    return this.isValidRedBlackNode(this.root) !== -1;
+  }
+
+  private isValidRedBlackNode(node: Node<T> | null): number {
+    if (node === null) return 1;
+    if (node.parent?.color === NodeColor.RED && node.color === NodeColor.RED)
+      return -1;
+    const leftHeight = this.isValidRedBlackNode(node.left);
+    const rightHeight = this.isValidRedBlackNode(node.right);
+
+    if (leftHeight === -1 || rightHeight === -1) return -1;
+    if (leftHeight !== rightHeight) return -1;
+
+    if (node.color === NodeColor.BLACK) return 1 + leftHeight;
+
+    return leftHeight;
   }
 }
