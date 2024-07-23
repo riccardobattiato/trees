@@ -24,9 +24,13 @@ export class RedBlackTree<T> {
 
   private insertNode(node: Node<T> | null, value: T): Node<T> {
     if (node === null) return new Node(value);
+
     if (value > node.value) node.right = this.insertNode(node.right, value);
-    else if (value < node.value)
-      node.left = this.insertNode(node.left, value);
+    else if (value < node.value) node.left = this.insertNode(node.left, value);
+
+    if (node.right && node.right.parent === null) node.right.parent = node;
+    if (node.left && node.left.parent === null) node.left.parent = node;
+
     return node;
   }
 
