@@ -6,7 +6,7 @@ Progression and base test cases courtesy of ChatGPT
 1. [x] Binary Tree
 2. [x] Binary Search Tree
 3. [x] AVL Tree
-4. [ ] Red Black Tree
+4. [x] Red Black Tree
 5. [ ] Red Black Interval Tree
 
 To install dependencies:
