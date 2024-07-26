@@ -65,7 +65,7 @@ export class RedBlackTree<T> {
 
         /*
         easy case: if parent level is red for both nodes,
-        we can swap them to red knowing that black-height will
+        we can swap them to black knowing that black-height will
         increase evenly
         */
         if (uncle?.color === NodeColor.RED) {
