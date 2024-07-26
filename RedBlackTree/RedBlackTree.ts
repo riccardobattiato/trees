@@ -115,8 +115,41 @@ export class RedBlackTree<T> {
     }
   }
 
+  /* A standard BST deletion, with the difference that we have to keep following the
+  rules from the colors. The actual deletion happens only when a node has at least one
+  null child, the colors can stay unchanged otherwise */
   delete(value: T): void {
-    // TODO: Implement the delete method
+    let node = this.root;
+    while (node && node.value !== value) {
+      if (value > node.value) node = node.right;
+      else node = node.left;
+    }
+    if (node === null) return;
+
+    if (node.left === null) {
+      // right child may be leaf or null
+      if (node === node.parent?.left) node.parent.left = node.right;
+      else node.parent!.right = node.right;
+
+      if (node.right) node.right.parent = node.parent;
+    } else if (node.right === null) {
+      // left child may be leaf or null
+      if (node === node.parent?.left) node.parent.left = node.left;
+      else node.parent!.right = node.left;
+
+      if (node.left) node.left.parent = node.parent;
+    } else {
+      // both children exist, proceed with value substitution
+      const inOrderValues: T[] = [];
+      this.inOrder(node.right, inOrderValues);
+      if (inOrderValues.length === 0)
+        throw new Error("Issues with inorder traversal!");
+
+      // replace with inorder successor
+      const inOrderSuccessor = inOrderValues[0];
+      this.delete(inOrderSuccessor);
+      node.value = inOrderSuccessor;
+    }
   }
 
   private deleteFix(node: Node<T>): void {

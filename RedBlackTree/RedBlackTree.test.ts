@@ -21,6 +21,16 @@ describe("RedBlackTree - Randomized Tests", () => {
     expect(rbTree.inOrderTraversal()).toEqual(sortedValues);
   });
 
+  test("should handle deletions of random values", () => {
+    const values = generateRandomArray(50, 1, 500);
+    values.forEach((value) => rbTree.insert(value));
+    const valuesToDelete = values.slice(0, 25);
+    valuesToDelete.forEach((value) => {
+      rbTree.delete(value);
+      expect(rbTree.search(value)).toBe(false); // Ensure the value is actually deleted
+    });
+  });
+
   test("should handle deletions of random values and maintain red-black properties", () => {
     const values = generateRandomArray(50, 1, 500);
     values.forEach((value) => rbTree.insert(value));
