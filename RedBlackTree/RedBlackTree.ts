@@ -117,38 +117,59 @@ export class RedBlackTree<T> {
 
   /* A standard BST deletion, with the difference that we have to keep following the
   rules from the colors. The actual deletion happens only when a node has at least one
-  null child, the colors can stay unchanged otherwise */
+  null child, the colors can stay unchanged otherwise.
+  
+  As for color handling, it can be one of the following:
+
+  a) We delete a black node, and the biggest problem is that it could leave one path
+  in the subtree with one black less. An easy fix is the case with a red child: it will
+  replace the node, and it can become black. Same height as before.
+  Otherwise, doesn't matter if there is a child or not: we have one black less in the path
+
+  b) We delete a red node. This is easy, as the black height will never be affected
+  */
   delete(value: T): void {
     let node = this.root;
+
+    // Find the node to delete
     while (node && node.value !== value) {
       if (value > node.value) node = node.right;
       else node = node.left;
     }
-    if (node === null) return;
 
-    if (node.left === null) {
-      // right child may be leaf or null
-      if (node === node.parent?.left) node.parent.left = node.right;
-      else node.parent!.right = node.right;
+    if (node === null) return; // Node not found
 
-      if (node.right) node.right.parent = node.parent;
-    } else if (node.right === null) {
-      // left child may be leaf or null
-      if (node === node.parent?.left) node.parent.left = node.left;
-      else node.parent!.right = node.left;
+    // Node with one or no child
+    if (node.left === null || node.right === null) {
+      let child = node.left ? node.left : node.right;
 
-      if (node.left) node.left.parent = node.parent;
+      // If node to be deleted is black
+      if (node.color === NodeColor.BLACK) {
+        // If the node has a red child, we can just recolor it
+        if (child && child.color === NodeColor.RED) {
+          child.color = NodeColor.BLACK;
+        } else {
+          // If node is black and has no child or black child, we have a double black situation
+          this.deleteFix(node);
+        }
+      }
+
+      // Replace node with its child
+      if (node === this.root) {
+        this.root = child;
+        if (this.root) this.root.color = NodeColor.BLACK;
+      } else {
+        if (node === node.parent?.left) node.parent.left = child;
+        else node.parent!.right = child;
+
+        if (child) child.parent = node.parent;
+      }
     } else {
-      // both children exist, proceed with value substitution
-      const inOrderValues: T[] = [];
-      this.inOrder(node.right, inOrderValues);
-      if (inOrderValues.length === 0)
-        throw new Error("Issues with inorder traversal!");
-
-      // replace with inorder successor
-      const inOrderSuccessor = inOrderValues[0];
-      this.delete(inOrderSuccessor);
-      node.value = inOrderSuccessor;
+      // Node with two children
+      let successor = this.getMin(node.right);
+      let successorValue = successor.value;
+      this.delete(successorValue); // Recursively delete the successor
+      node.value = successorValue; // Replace value
     }
   }
 
@@ -260,8 +281,8 @@ export class RedBlackTree<T> {
   }
 
   private getMin(node: Node<T>): Node<T> {
-    // TODO: Implement the method to get the minimum value node
-    return node;
+    if (node.left === null) return node;
+    return node.left;
   }
 
   isValidRedBlackTree(): boolean {
