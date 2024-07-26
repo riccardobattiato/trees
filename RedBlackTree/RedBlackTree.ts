@@ -130,6 +130,8 @@ export class RedBlackTree<T> {
   */
   delete(value: T): void {
     let node = this.root;
+    let nodeToDelete: Node<T> | null = null;
+    let replacementNode: Node<T> | null = null;
 
     // Find the node to delete
     while (node && node.value !== value) {
@@ -139,42 +141,99 @@ export class RedBlackTree<T> {
 
     if (node === null) return; // Node not found
 
-    // Node with one or no child
-    if (node.left === null || node.right === null) {
-      let child = node.left ? node.left : node.right;
+    nodeToDelete = node;
 
-      // If node to be deleted is black
-      if (node.color === NodeColor.BLACK) {
-        // If the node has a red child, we can just recolor it
-        if (child && child.color === NodeColor.RED) {
-          child.color = NodeColor.BLACK;
-        } else {
-          // If node is black and has no child or black child, we have a double black situation
-          this.deleteFix(node);
-        }
-      }
-
-      // Replace node with its child
-      if (node === this.root) {
-        this.root = child;
-        if (this.root) this.root.color = NodeColor.BLACK;
-      } else {
-        if (node === node.parent?.left) node.parent.left = child;
-        else node.parent!.right = child;
-
-        if (child) child.parent = node.parent;
-      }
+    if (nodeToDelete.left === null || nodeToDelete.right === null) {
+      replacementNode = nodeToDelete.left
+        ? nodeToDelete.left
+        : nodeToDelete.right;
     } else {
-      // Node with two children
-      let successor = this.getMin(node.right);
-      let successorValue = successor.value;
-      this.delete(successorValue); // Recursively delete the successor
-      node.value = successorValue; // Replace value
+      let successor = this.getMin(nodeToDelete.right!);
+      nodeToDelete.value = successor.value;
+      nodeToDelete = successor;
+      replacementNode = nodeToDelete.right;
+    }
+
+    if (nodeToDelete.color === NodeColor.BLACK) {
+      if (replacementNode && replacementNode.color === NodeColor.RED) {
+        replacementNode.color = NodeColor.BLACK;
+      } else {
+        this.deleteFix(nodeToDelete);
+      }
+    }
+
+    if (nodeToDelete === this.root) {
+      this.root = replacementNode;
+      if (this.root) this.root.color = NodeColor.BLACK;
+    } else {
+      if (nodeToDelete === nodeToDelete.parent?.left)
+        nodeToDelete.parent.left = replacementNode;
+      else nodeToDelete.parent!.right = replacementNode;
+
+      if (replacementNode) replacementNode.parent = nodeToDelete.parent;
     }
   }
 
   private deleteFix(node: Node<T>): void {
-    // TODO: Implement the fixup method after deletion to maintain Red-Black properties
+    while (node !== this.root && node.color === NodeColor.BLACK) {
+      let parent = node.parent!;
+      if (node === parent.left) {
+        let sibling = parent.right!;
+        if (sibling.color === NodeColor.RED) {
+          sibling.color = NodeColor.BLACK;
+          parent.color = NodeColor.RED;
+          this.leftRotate(parent);
+          sibling = parent.right!;
+        }
+        if (
+          (sibling.left?.color ?? NodeColor.BLACK) === NodeColor.BLACK &&
+          (sibling.right?.color ?? NodeColor.BLACK) === NodeColor.BLACK
+        ) {
+          sibling.color = NodeColor.RED;
+          node = parent;
+        } else {
+          if ((sibling.right?.color ?? NodeColor.BLACK) === NodeColor.BLACK) {
+            sibling.left!.color = NodeColor.BLACK;
+            sibling.color = NodeColor.RED;
+            this.rightRotate(sibling);
+            sibling = parent.right!;
+          }
+          sibling.color = parent.color;
+          parent.color = NodeColor.BLACK;
+          sibling.right!.color = NodeColor.BLACK;
+          this.leftRotate(parent);
+          node = this.root!;
+        }
+      } else {
+        let sibling = parent.left!;
+        if (sibling.color === NodeColor.RED) {
+          sibling.color = NodeColor.BLACK;
+          parent.color = NodeColor.RED;
+          this.rightRotate(parent);
+          sibling = parent.left!;
+        }
+        if (
+          (sibling.left?.color ?? NodeColor.BLACK) === NodeColor.BLACK &&
+          (sibling.right?.color ?? NodeColor.BLACK) === NodeColor.BLACK
+        ) {
+          sibling.color = NodeColor.RED;
+          node = parent;
+        } else {
+          if ((sibling.left?.color ?? NodeColor.BLACK) === NodeColor.BLACK) {
+            sibling.right!.color = NodeColor.BLACK;
+            sibling.color = NodeColor.RED;
+            this.leftRotate(sibling);
+            sibling = parent.left!;
+          }
+          sibling.color = parent.color;
+          parent.color = NodeColor.BLACK;
+          sibling.left!.color = NodeColor.BLACK;
+          this.rightRotate(parent);
+          node = this.root!;
+        }
+      }
+    }
+    node.color = NodeColor.BLACK;
   }
 
   search(value: T): boolean {
